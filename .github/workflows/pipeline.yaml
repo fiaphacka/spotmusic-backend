@@ -31,6 +31,7 @@ jobs:
             docker build -t us-west1-docker.pkg.dev/grupo-15-384916/spotrepo/backend:${{ github.sha }} .
             docker push us-west1-docker.pkg.dev/grupo-15-384916/spotrepo/backend:${{ github.sha }}
             rm gcp_sa_key.json
+            
   deploy:
     needs: build_and_push
     runs-on: ubuntu-lates 
@@ -43,7 +44,7 @@ jobs:
           export_default_credentials: tru 
       - name: Deploy no Cloud Run
         run: |
-          gcloud run deploy spot-frontend --image us-west1-docker.pkg.dev/${GCP_PROJECT_ID}/spotrepo/app:${GITHUB_SHA} --region us-west1 --platform managed --allow-unauthenticated
+          gcloud run deploy spot-frontend --image us-west1-docker.pkg.dev/${GCP_PROJECT_ID}/spotrepo/backend:${GITHUB_SHA} --region us-west1 --platform managed --allow-unauthenticated
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GITHUB_SHA: ${{ github.sha }}
