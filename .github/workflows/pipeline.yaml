@@ -33,7 +33,7 @@ jobs:
             rm gcp_sa_key.json
 
   Deploy:
-    needs: Build
+    needs: build_and_push
     runs-on: ubuntu-latest
 
     steps:
