@@ -32,40 +32,6 @@ jobs:
             docker push us-west1-docker.pkg.dev/grupo-15-384916/spotrepo/backend:${{ github.sha }}
             rm gcp_sa_key.json
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-jobs:
-  build_and_push:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Python
-        uses: actions/setup-python@v4   # https://github.com/actions/setup-python
-        with:
-          python-version: '3.10'
-
-      - name: Install Requirements
-        run:  pip install flask
-
-      - name: Build and push Docker image
-        run: |
-            echo ${{ secrets.GCP_SA_KEY_BASE64 }} | base64 --decode > gcp_sa_key.json
-            gcloud auth activate-service-account --key-file=gcp_sa_key.json
-            gcloud config set project grupo-15-384916
-            gcloud auth configure-docker us-west1-docker.pkg.dev
-            docker build -t us-west1-docker.pkg.dev/grupo-15-384916/spotrepo/backend:${{ github.sha }} .
-            docker push us-west1-docker.pkg.dev/grupo-15-384916/spotrepo/backend:${{ github.sha }}
-            rm gcp_sa_key.json
-
   Deploy:
     needs: Build
     runs-on: ubuntu-latest
