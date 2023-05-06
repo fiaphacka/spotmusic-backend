@@ -44,7 +44,7 @@ jobs:
           export_default_credentials: true 
       - name: Deploy no Cloud Run
         run: |
-          gcloud run deploy spot-backend --image us-west1-docker.pkg.dev/${GCP_PROJECT_ID}/spotrepo/backend:{{ github.sha }} --region us-west1 --platform managed --allow-unauthenticated
+          gcloud run deploy spot-backend --image us-west1-docker.pkg.dev/${GCP_PROJECT_ID}/spotrepo/backend:${{ github.sha }} --region us-west1 --platform managed --allow-unauthenticated
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GITHUB_SHA: ${{ github.sha }}
